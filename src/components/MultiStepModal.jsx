@@ -42,8 +42,8 @@ const MultiStepModal = ({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.25 }}
-        className={`bg-white rounded-lg shadow-lg ${
-          size === "sm" ? "w-3/6" : "w-9/12"
+        className={`bg-white rounded-lg shadow-lg w-11/12 ${
+          size === "sm" ? "md:w-3/6" : "md:w-9/12"
         } h-auto max-h-[100vh] modal-content relative`}
         onClick={(event) => event.stopPropagation()}
       >

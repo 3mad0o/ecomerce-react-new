@@ -45,7 +45,7 @@ export const ProductCard = ({}) => {
 
   return (
     <>
-      <Link to="/product/1" className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-md transition-all z-1">
+      <Link to={"/product/"+Math.random(1,10)} className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-md transition-all z-1">
         <div className="w-full">
           <img src={images[Math.floor(Math.random() * images.length)]} alt="Product 1" className="w-full object-cover object-top aspect-[230/230]" />
         </div>
@@ -61,7 +61,7 @@ export const ProductCard = ({}) => {
               </div>
               <div className="flex items-center gap-0.5">
                 {/* Stars */}
-                <svg className="w-[14px] h-[14px] fill-blue-600" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-[14px] h-[14px] fill-black" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                 </svg>
                 {/* Add more stars as needed */}
@@ -77,7 +77,7 @@ export const ProductCard = ({}) => {
             <button
               type="button"
               onClick={handleAddToCartClick}
-              className="text-sm px-2 min-h-[36px] w-full bg-blue-600 hover:bg-blue-700 text-white tracking-wide ml-auto outline-none border-none rounded"
+              className="text-sm px-2 min-h-[36px] w-full bg-black hover:bg-blue-700 text-white tracking-wide ml-auto outline-none border-none rounded"
             >
               Add to cart
             </button>

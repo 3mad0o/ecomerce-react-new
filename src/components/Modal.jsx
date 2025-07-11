@@ -29,7 +29,7 @@ const Modal = ({ isOpen, onClose,title,size, children }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={handleClickOutside}>
       <div
-        className={`bg-white rounded-lg shadow-lg ${size && size =='sm' ? "w-3/6" : "w-9/12"}  h-auto max-h-[100vh] modal-content`}
+        className={`bg-white rounded-lg shadow-lg ${size && size =='sm' ? "md:w-3/6" : "md:w-9/12"} w-11/12 h-auto max-h-[100vh] modal-content`}
         onClick={(event) => event.stopPropagation()} // Prevent modal from closing when clicking inside
       >
         <div className="flex justify-between p-5">

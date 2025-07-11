@@ -12,7 +12,7 @@ export const Layout = () => {
   return (
       <div className="relative">
         <NavBar />
-        <Banner />
+        {/* <Banner /> */}
         <Outlet />
 
         {isCartSlideOpen && <CartSlide />}

@@ -24,7 +24,7 @@ export const ChangeAddressList = ({setAddressStep}) => {
     <>
 
     <button
-      type="button" className="mt-2 w-full mb-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      type="button" className="mt-2 w-full mb-4 px-4 py-2 bg-black text-white rounded-md hover:bg-blue-700"
       onClick={() => setAddressStep(2)}>Create Address</button>
 
 
@@ -83,7 +83,7 @@ rounded-md shadow-sm">
 
       <button
         type="submit"
-        className="ml-4 mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        className="ml-4 mt-2 px-4 py-2 bg-black text-white rounded-md hover:bg-blue-700"
       >
         Submit
       </button>

@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addToCart, toggleCartSide } from "../redux/Cart/CartSlice";
 import { ProductList } from "../features/Products/Components/ProductList";
-import { useParams, useSearchParams } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
 
 export const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState(null);
@@ -109,7 +109,7 @@ export const ProductDetail = () => {
 
               <div class="flex space-x-2 mt-4">
                 <svg
-                  class="w-5 fill-blue-600"
+                  class="w-5 fill-black"
                   viewBox="0 0 14 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,7 @@ export const ProductDetail = () => {
                   <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                 </svg>
                 <svg
-                  class="w-5 fill-blue-600"
+                  class="w-5 fill-black"
                   viewBox="0 0 14 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +125,7 @@ export const ProductDetail = () => {
                   <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                 </svg>
                 <svg
-                  class="w-5 fill-blue-600"
+                  class="w-5 fill-black"
                   viewBox="0 0 14 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +133,7 @@ export const ProductDetail = () => {
                   <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                 </svg>
                 <svg
-                  class="w-5 fill-blue-600"
+                  class="w-5 fill-black"
                   viewBox="0 0 14 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +201,7 @@ export const ProductDetail = () => {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                class="w-full mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md"
+                class="w-full mt-8 px-6 py-3 bg-black hover:bg-blue-700 text-white text-sm font-semibold rounded-md"
               >
                 Add to cart
               </button>
@@ -234,7 +234,7 @@ export const ProductDetail = () => {
                   <div class="flex items-center">
                     <p class="text-sm text-gray-800 font-bold">5.0</p>
                     <svg
-                      class="w-5 fill-blue-600 ml-1.5"
+                      class="w-5 fill-black ml-1.5"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -242,7 +242,7 @@ export const ProductDetail = () => {
                       <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                     </svg>
                     <div class="bg-gray-300 rounded-md w-full h-2 ml-3">
-                      <div class="w-2/3 h-full rounded-md bg-blue-600"></div>
+                      <div class="w-2/3 h-full rounded-md bg-black"></div>
                     </div>
                     <p class="text-sm text-gray-800 font-bold ml-3">66%</p>
                   </div>
@@ -250,7 +250,7 @@ export const ProductDetail = () => {
                   <div class="flex items-center">
                     <p class="text-sm text-gray-800 font-bold">4.0</p>
                     <svg
-                      class="w-5 fill-blue-600 ml-1.5"
+                      class="w-5 fill-black ml-1.5"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -258,7 +258,7 @@ export const ProductDetail = () => {
                       <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                     </svg>
                     <div class="bg-gray-300 rounded-md w-full h-2 ml-3">
-                      <div class="w-1/3 h-full rounded-md bg-blue-600"></div>
+                      <div class="w-1/3 h-full rounded-md bg-black"></div>
                     </div>
                     <p class="text-sm text-gray-800 font-bold ml-3">33%</p>
                   </div>
@@ -266,7 +266,7 @@ export const ProductDetail = () => {
                   <div class="flex items-center">
                     <p class="text-sm text-gray-800 font-bold">3.0</p>
                     <svg
-                      class="w-5 fill-blue-600 ml-1.5"
+                      class="w-5 fill-black ml-1.5"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +274,7 @@ export const ProductDetail = () => {
                       <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                     </svg>
                     <div class="bg-gray-300 rounded-md w-full h-2 ml-3">
-                      <div class="w-1/6 h-full rounded-md bg-blue-600"></div>
+                      <div class="w-1/6 h-full rounded-md bg-black"></div>
                     </div>
                     <p class="text-sm text-gray-800 font-bold ml-3">16%</p>
                   </div>
@@ -282,7 +282,7 @@ export const ProductDetail = () => {
                   <div class="flex items-center">
                     <p class="text-sm text-gray-800 font-bold">2.0</p>
                     <svg
-                      class="w-5 fill-blue-600 ml-1.5"
+                      class="w-5 fill-black ml-1.5"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +290,7 @@ export const ProductDetail = () => {
                       <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                     </svg>
                     <div class="bg-gray-300 rounded-md w-full h-2 ml-3">
-                      <div class="w-1/12 h-full rounded-md bg-blue-600"></div>
+                      <div class="w-1/12 h-full rounded-md bg-black"></div>
                     </div>
                     <p class="text-sm text-gray-800 font-bold ml-3">8%</p>
                   </div>
@@ -298,7 +298,7 @@ export const ProductDetail = () => {
                   <div class="flex items-center">
                     <p class="text-sm text-gray-800 font-bold">1.0</p>
                     <svg
-                      class="w-5 fill-blue-600 ml-1.5"
+                      class="w-5 fill-black ml-1.5"
                       viewBox="0 0 14 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -306,18 +306,18 @@ export const ProductDetail = () => {
                       <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                     </svg>
                     <div class="bg-gray-300 rounded-md w-full h-2 ml-3">
-                      <div class="w-[6%] h-full rounded-md bg-blue-600"></div>
+                      <div class="w-[6%] h-full rounded-md bg-black"></div>
                     </div>
                     <p class="text-sm text-gray-800 font-bold ml-3">6%</p>
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  class="w-full mt-8 px-6 py-2.5 border border-blue-600 bg-transparent text-gray-800 text-sm font-semibold rounded-md"
+                <Link
+                  to={`/product/${id}/reviews`}
+                  class="w-full block text-center mt-8 px-6 py-2.5 border border-blue-600 bg-transparent text-gray-800 text-sm font-semibold rounded-md"
                 >
                   Read all reviews
-                </button>
+                </Link>
               </div>
             </div>
           </div>

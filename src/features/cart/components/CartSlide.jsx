@@ -358,7 +358,7 @@ export const CartSlide = () => {
             </ul>
             <button type="button" onClick={handleCheckoutClick}
               to="/checkout"
-              className="text-sm font-semibold px-6 py-3 w-full bg-blue-600 hover:bg-blue-700 text-white rounded-md tracking-wide text-center"
+              className="text-sm font-semibold px-6 py-3 w-full bg-black hover:bg-blue-700 text-white rounded-md tracking-wide text-center"
             >
               Checkout
             </button>

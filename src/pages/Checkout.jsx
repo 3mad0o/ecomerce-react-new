@@ -7,11 +7,7 @@ import { CreateAddress } from "../features/address/components/CreateAddress";
 import MultiStepModal from "../components/MultiSTepModal";
 import { AnimatePresence, motion } from "framer-motion";
 
-const componentMap = {
-  ChangeAddressList,
-  EditAddress,
-  CreateAddress,
-};
+
 export const Checkout = () => {
   const [address, setAddress] = useState(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -23,7 +19,7 @@ export const Checkout = () => {
   return (
     <>
       <div className="grid grid-cols-6 gap-5 m-5 ">
-        <div className="  p-6  col-span-4 shadow-md rounded-md border border-gray-100 flex flex-col gap-6">
+        <div className="  p-6  md:col-span-4 col-span-6 shadow-md rounded-md border border-gray-100 flex flex-col gap-6">
           <div>
             <div className="flex items-center gap-4 text-gray-800">
               <h3 className="text-2xl font-bold flex-1">Shipping Info</h3>
@@ -140,7 +136,7 @@ export const Checkout = () => {
           </div>
         </div>
 
-        <div className="col-span-2 ">
+        <div className="lg:col-span-2 md:cols-apn-4 col-span-6">
           <div class="space-y-6 h-fit p-6 shadow-md rounded-md border border-gray-100 sticky top-[75px]">
             <h2 class="text-xl text-slate-900 font-semibold mb-6">
               Order Summary
@@ -170,7 +166,7 @@ export const Checkout = () => {
             <div class="space-y-4 mt-8">
               <button
                 type="button"
-                class="rounded-md px-4 py-2.5 w-full text-sm font-medium tracking-wide bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+                class="rounded-md px-4 py-2.5 w-full text-sm font-medium tracking-wide bg-black hover:bg-blue-700 text-white cursor-pointer"
               >
                 Complete Purchase
               </button>

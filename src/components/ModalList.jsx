@@ -44,7 +44,7 @@ const ModalList = ({ componentMap, size = "md" }) => {
       onClick={handleClickOutside}
     >
       <div
-        className={`bg-white rounded-lg shadow-lg ${
+        className={`bg-white rounded-lg shadow-lgz ${
           size === "sm" ? "w-3/6" : "w-9/12"
         } max-h-[100vh] modal-content`}
         onClick={(e) => e.stopPropagation()}
