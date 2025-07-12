@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router";
 
 export const Dropdown = ({ items ,title}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,14 +30,14 @@ export const Dropdown = ({ items ,title}) => {
             <div className="py-1" role="none">
               {items.map((item, index) =>
                 item.link ? (
-                  <a
+                  <Link
                     key={index}
-                    href={item.link}
+                    to={item.link}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ) : (
                   <button
                     key={index}

@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import { toggleCartSide } from "../redux/Cart/CartSlice";
 import Modal from "../components/Modal";
 import { LoginModal } from "../features/authentication/components/LoginModal";
-import { CiHeart, CiShoppingCart, CiUser } from "react-icons/ci";
+import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import omdalogo from "../assets/omdalogo.png";
 import { Dropdown } from "../components/ui/Dropdown";
+import { closeModal, openSearchModal } from "../redux/Search/searchSlice";
+import { SearchModal } from "../features/search/components/SearchModal";
 
 export const NavBar = () => {
+
   const [categories, setCategories] = useState([
     { id: 1, name: "Electronics" },
     { id: 2, name: "Fashion" },
@@ -30,6 +33,11 @@ export const NavBar = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   const cartCount = useSelector((state) => state.carts.carts.length);
+  const isSearchModalOpen =useSelector((state)=>state.search.isOpenSearch);
+
+  useEffect(() => {
+  console.log("Modal open?", isSearchModalOpen);
+});
   const wishlistCount = useSelector(
     (state) => state.wishlist.wishlistItems.length
   );
@@ -45,7 +53,7 @@ export const NavBar = () => {
     setIsLogin(true);
   };
 
-  const closeModal = () => {
+  const closeLoginModal = () => {
     setOpenLoginModal(false);
     setIsLogin(false);
   };
@@ -88,34 +96,28 @@ export const NavBar = () => {
                 </button>
               </div>
 
-              <div className="flex flex-1 justify-center">
-                <div className="flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden w-full max-w-lg">
-                  <input
-                    type="text"
-                    placeholder="Search something..."
-                    className="w-full text-sm bg-transparent outline-none pr-2"
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 192.904 192.904"
-                    width="16px"
-                    className="cursor-pointer fill-gray-600"
-                  >
-                    <path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z"></path>
-                  </svg>
-                </div>
-              </div>
+     
 
               <div className="flex items-center gap-x-6 gap-y-4 ">
+
+
                 <div className="flex items-center sm:space-x-8 space-x-6">
+
+                     <button type="button"
+                    onClick={()=>dispatch(openSearchModal())}
+                  
+                  >
+                    <CiSearch className="text-3xl" />
+
+                  </button>
                   <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
-                    <div className="relative">
+                    <Link className="relative" to={'/wishlist'}>
                       <CiHeart className="text-3xl" />
 
                       <span className="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
                         {wishlistCount}
                       </span>
-                    </div>
+                    </Link>
                   </div>
                   <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
                     <div className="relative" onClick={openCart}>
@@ -166,15 +168,25 @@ export const NavBar = () => {
       </header>
 
       {openLoginModal && isLogin && (
-        <Modal isOpen={openLoginModal && isLogin} onClose={closeModal}>
+        <Modal isOpen={openLoginModal && isLogin} onClose={closeLoginModal}>
           <LoginModal />
         </Modal>
       )}
 
       {openLoginModal && !isLogin && (
-        <Modal isOpen={openLoginModal && !isLogin} onClose={closeModal}>
+        <Modal isOpen={openLoginModal && !isLogin} onClose={closeLoginModal}>
           <RegisterModal />
         </Modal>
+      )}
+
+
+      {isSearchModalOpen && (
+          <Modal isOpen={isSearchModalOpen} onClose={()=>dispatch(closeModal())} title={'Search Product'}>
+                <SearchModal />
+
+
+          </Modal>
+
       )}
     </>
   );

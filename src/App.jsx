@@ -9,6 +9,8 @@ import ScrollToTop from "./utils/ScrollToTop";
 import { ProductReviews } from "./pages/ProductREviews";
 import { Category } from "./pages/Category";
 import { Orders } from "./pages/Orders";
+import { OrderDetails } from "./pages/OrderDetails";
+import { WishList } from "./pages/WishList";
 
 function App() {
   return (
@@ -24,6 +26,10 @@ function App() {
               <Route path="product/:id/reviews" element={<ProductReviews />} />
               <Route path="/category/:slug" element={<Category />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/:id" element={<OrderDetails />} />
+              <Route path="/wishlist" element={<WishList />} />
+
+
 
 
 

@@ -25,6 +25,7 @@ const newPerson = () => {
         'returned',
     ]),
     grandTotal: formatCurrency(faker.number.int(1000), 'USD', 'en-US'),
+    createdAt: faker.date.past().toLocaleDateString('en-US'),
   }
 }
 
@@ -45,7 +46,7 @@ export function makeData(...lens) {
 
 const data = makeData(10000)
 
-export async function fetchData(options) {
+export async function fetchData(options,status) {
   // Simulate some network latency
   await new Promise(r => setTimeout(r, 500))
 
