@@ -16,7 +16,6 @@ export const ProductSwiper = ({ title, swiper, products, icon }) => {
   const nextRef = useRef(null);
 
   const sampleProducts = [];
-  const itemsToShow = [1,2,3,4,5,5,6,6,6,6,6,6,6,6,6,,6,6,6,6,1,1,1,1,,1,1,1,1,,1,1,1,,1,1,1,1];
 
   return (
     <div className="product-swiper-wrapper">
@@ -64,10 +63,10 @@ export const ProductSwiper = ({ title, swiper, products, icon }) => {
           swiper.params.navigation.nextEl = nextRef.current;
         }}
       >
-        {itemsToShow.map((product, index) => (
+        {products.map((product, index) => (
           <SwiperSlide key={index}>
             <div className="slider_item p-2">
-              <ProductCard withoutAddToCart={true} />
+              <ProductCard withoutAddToCart={true}product={product} />
             </div>
           </SwiperSlide>
         ))}
