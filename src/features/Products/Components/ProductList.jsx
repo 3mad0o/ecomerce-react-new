@@ -3,10 +3,11 @@ import axios from "axios";
 import { ProductCard } from "./ProductCard";
 import { ProductCardEmpty } from "./ProductCardEmpty";
 
-export const ProductList = ({ title, isLargeGrid = true }) => {
+export const ProductList = ({ title, isLargeGrid = true, filters }) => {
   const [products, setProducts] = useState([]);
-  const [nextPageUrl, setNextPageUrl] = useState(
-    "http://127.0.0.1:8000/api/v1/products"
+  const [nextPageUrl, setNextPageUrl] = useState();
+  const [initUrl, setInitUrl] = useState(
+    "http://192.168.1.32:8000/api/v1/products"
   );
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef();
@@ -20,7 +21,9 @@ export const ProductList = ({ title, isLargeGrid = true }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        params: filters,
+      });
       setProducts((prev) => [...prev, ...response.data.data]);
 
       const next = response.data.links?.next ?? null;
@@ -35,26 +38,28 @@ export const ProductList = ({ title, isLargeGrid = true }) => {
 
   // Initial load on mount
   useEffect(() => {
-    loadMoreProducts(nextPageUrl);
-  }, []);
+    setNextPageUrl(initUrl);
+    setProducts([]);
+    loadMoreProducts(initUrl);
+  }, [filters]);
 
   // Intersection observer to trigger loading more when scrolled to bottom
-  useEffect(() => {
-    if (!observerRef.current) return;
+  // useEffect(() => {
+  //   if (!observerRef.current) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          loadMoreProducts(nextPageUrl);
-        }
-      },
-      { threshold: 1.0 }
-    );
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       if (entry.isIntersecting) {
+  //         loadMoreProducts(nextPageUrl);
+  //       }
+  //     },
+  //     { threshold: 1.0 }
+  //   );
 
-    observer.observe(observerRef.current);
+  //   observer.observe(observerRef.current);
 
-    return () => observer.disconnect();
-  }, [nextPageUrl]);
+  //   return () => observer.disconnect();
+  // }, [nextPageUrl]);
 
   return (
     <div className="font-sans">
@@ -82,11 +87,16 @@ export const ProductList = ({ title, isLargeGrid = true }) => {
       </div>
 
       {/* Intersection observer target */}
-      <div
-        ref={observerRef}
-        className="h-10 min-h-[100px] flex justify-center items-center text-gray-600 mt-4"
-      >
-        {isLoading ? "Loading more..." : "Scroll to load more"}
+      <div className="h-10 min-h-[100px] flex justify-center items-center text-gray-600 mt-4">
+        {nextPageUrl && (
+          <button
+            type="button"
+            onClick={() => loadMoreProducts(nextPageUrl)}
+            className="bg-black text-white px-4 py-2 rounded"
+          >
+            Load More
+          </button>
+        )}
       </div>
     </div>
   );

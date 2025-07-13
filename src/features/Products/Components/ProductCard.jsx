@@ -35,7 +35,7 @@ export const ProductCard = ({ withoutAddToCart = false, product }) => {
   return (
     <>
       <Link
-        to={`/product/${product.id}`}
+        to={`/product/${product.slug}`}
         className="bg-white flex flex-col overflow-hidden cursor-pointer hover:shadow-md transition-all z-1"
       >
         <div className="w-full">
@@ -77,7 +77,7 @@ export const ProductCard = ({ withoutAddToCart = false, product }) => {
                   <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
                 </svg>
                 <span className="text-xs text-gray-600">
-                  {product.reviews_rate_sum.toFixed(1)} ({product.reviews_count})
+                  {parseInt(product.reviews_rate_sum).toFixed(1)} ({product.reviews_count})
                 </span>
               </div>
             </div>
