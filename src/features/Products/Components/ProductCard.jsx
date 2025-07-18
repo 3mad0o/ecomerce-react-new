@@ -106,7 +106,7 @@ export const ProductCard = ({ withoutAddToCart = false, product }) => {
       </Link>
 
       <Modal isOpen={isModalOpen && !withoutAddToCart} onClose={closeModal}>
-        <AddProductToCartModal product={product} closeModal={closeModal} />
+        <AddProductToCartModal product={product} slug={product.slug} closeModal={closeModal} />
       </Modal>
     </>
   );

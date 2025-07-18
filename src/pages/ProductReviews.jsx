@@ -4,32 +4,12 @@ import "react-photo-view/dist/react-photo-view.css";
 import { AiOutlineLike } from "react-icons/ai";
 import { MdOutlineReportProblem } from "react-icons/md";
 import axios from "axios";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
+import { useProductReviews } from "../features/Products/hooks/useProductReviews";
 
 export const ProductReviews = () => {
   const { slug } = useParams();
-  const [comments, setComments] = useState([]);
-  const [product, setProduct] = useState(null);
-  const [url, setUrl] = useState(
-    `http://192.168.1.32:8000/api/v1/products/${slug}/reviews`
-  );
-
-  const loadReviews = () => {
-    axios
-      .get(url)
-      .then((res) => {
-        const data = res.data.data;
-        if (data) {
-          setComments((prev)=>[...prev,...data]);
-            setUrl(res.data?.links?.next ?? null);
-
-        }
-      })
-      .catch((err) => console.error("Error fetching product:", err));
-  };
-  useEffect(() => {
-    loadReviews();
-  }, []);
+  const { comments, product, loadReviews, setComments, setProduct,url } = useProductReviews({ slug });
   return (
     <>
       <div className="container mx-auto px-4    mb-48 md:mb-28 mt-4">
@@ -277,12 +257,12 @@ export const ProductReviews = () => {
               </div>
 
               {/* Add to cart button */}
-              <button
-                type="button"
+              <Link
+                to={`/product/${slug}`}
                 className="w-full h-fit sm:w-auto mt-4 sm:mt-0 px-6 py-3 bg-black hover:bg-blue-700 text-white text-sm font-semibold rounded-md"
               >
                 Add to cart
-              </button>
+              </Link>
             </div>
           </div>
         </div>

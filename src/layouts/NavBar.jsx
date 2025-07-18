@@ -32,7 +32,7 @@ export const NavBar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
 
-  const cartCount = useSelector((state) => state.carts.carts.length);
+  const cartCount = useSelector((state) => state.carts.cartCount);
   const isSearchModalOpen =useSelector((state)=>state.search.isOpenSearch);
 
   useEffect(() => {

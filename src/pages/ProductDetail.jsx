@@ -1,74 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Link, useParams, useSearchParams } from "react-router";
 import toast, { Toaster } from "react-hot-toast";
 import { addToCart, toggleCartSide } from "../redux/Cart/CartSlice";
 import { ProductList } from "../features/Products/Components/ProductList";
+import { useProductDeatils } from "../features/Products/hooks/useProductDeatils";
 
 export const ProductDetail = () => {
-  const [product, setProduct] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedVariants, setSelectedVariants] = useState({});
-  const dispatch = useDispatch();
   const { slug } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    axios
-      .get(`http://192.168.1.32:8000/api/v1/products/${slug}`)
-      .then((res) => {
-        const data = res.data.data;
-        setProduct(data);
-        setSelectedImage(data.main_image);
-      })
-      .catch((err) => console.error("Error fetching product:", err));
-  }, [slug]);
-
-  const handleVariantChange = (attributeId, valueId) => {
-    setSelectedVariants((prev) => ({
-      ...prev,
-      [attributeId]: valueId,
-    }));
-    searchParams.set(`attr_${attributeId}`, valueId);
-    setSearchParams(searchParams);
-  };
-
-  const handleAddToCart = () => {
-    const hasAllSelected = product?.attributes?.every((attr) =>
-      selectedVariants.hasOwnProperty(attr.id)
-    );
-
-    if (hasAllSelected) {
-      toast("Added Successfully", {
-        duration: 4000,
-        position: "top-right",
-        icon: "🛒",
-        iconTheme: { primary: "#f00", secondary: "#f00" },
-      });
-      dispatch(addToCart());
-      dispatch(toggleCartSide());
-    } else {
-      toast("Select all attributes!", {
-        duration: 4000,
-        position: "top-right",
-        icon: "❌",
-        iconTheme: { primary: "#f00", secondary: "#f00" },
-      });
-    }
-  };
-
-  const calculateDiscountedPrice = () => {
-    if (!product) return 0;
-    if (product.discount_type === "percentage") {
-      return (product.price - (product.price * product.discount) / 100).toFixed(
-        2
-      );
-    } else {
-      return (product.price - product.discount).toFixed(2);
-    }
-  };
-
+  const { 
+    isLoading,
+     product,
+    selectedImage,
+    setSelectedImage,
+    selectedVariants,
+    handleVariantChange,
+    handleAddToCart,
+    calculateDiscountedPrice} =useProductDeatils({slug});
   return (
     <>
       <div className="font-sans">

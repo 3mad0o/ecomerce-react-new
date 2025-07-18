@@ -7,6 +7,7 @@ import { ProductSwiper } from "../features/Products/Components/ProductSwiper";
 import { IoFlashOutline } from "react-icons/io5";
 import { BannerSlider } from "../features/banner/components/BannerSlider";
 import axios from "axios";
+import { Loading } from "../components/Loading";
 
 export const Home = () => {
   const [filters, setFilters] = React.useState({
@@ -31,6 +32,7 @@ export const Home = () => {
 
   return (
     <>
+
       <Slider />
 
       <div className="space-y-3 container mx-auto">
@@ -81,6 +83,7 @@ export const Home = () => {
         </div>
         <ProductList filters={filters} />
       </div>
+
     </>
   );
 };

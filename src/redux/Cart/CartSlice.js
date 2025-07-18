@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import apiClient from "../../lib/axios_client";
 
 const cartSlice = createSlice({
   name: "cart",
@@ -6,9 +7,14 @@ const cartSlice = createSlice({
     carts: [], // Initial state with three empty objects
     isCartSlideOpen: false, // State to manage the cart side visibility
     isCartLoading: false, // State to manage loading state
+    cartCount: 0, // State to manage the cart count
   },
   reducers: {
+    updateCartCount: (state, action) => {
+      state.cartCount = action.payload;
+    },
     addToCart: (state, action) => {
+      state.cartCount += 1; // Increment cart count
       state.carts = [...state.carts, action.payload];
     },
     deleteFromCart: (state, action) => {
@@ -31,5 +37,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, deleteFromCart, editFromCart,toggleCartSide } = cartSlice.actions;
+export const { addToCart, deleteFromCart, editFromCart,toggleCartSide,updateCartCount } = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;

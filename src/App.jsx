@@ -11,12 +11,14 @@ import { Category } from "./pages/Category";
 import { Orders } from "./pages/Orders";
 import { OrderDetails } from "./pages/OrderDetails";
 import { WishList } from "./pages/WishList";
+import { LoadingProvider } from "./contexts/LoadingProvider";
 
 function App() {
   return (
     <>
       <Provider store={store}>
-        <Router>
+        <LoadingProvider>
+   <Router>
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -38,6 +40,9 @@ function App() {
             </Route>
           </Routes>
         </Router>
+
+        </LoadingProvider>
+     
       </Provider>
     </>
   );
