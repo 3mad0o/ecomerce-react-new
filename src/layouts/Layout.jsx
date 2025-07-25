@@ -13,10 +13,12 @@ import { updateCartCount } from "../redux/Cart/CartSlice";
 import { get } from "react-hook-form";
 import { getOrCreateGuestId } from "../utils/guestCartService";
 import { useCategories } from "../features/Category/hooks/useCategories";
+import { useUser } from "../hooks/useUser";
 
 export const Layout = () => {
   const isCartSlideOpen = useSelector((state) => state.carts.isCartSlideOpen);
   const { loading } = useLoading();
+  const {user} = useUser();
   const dispatch = useDispatch();
 
   const {categories} = useCategories();

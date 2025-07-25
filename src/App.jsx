@@ -14,6 +14,7 @@ import { WishList } from "./pages/WishList";
 import { LoadingProvider } from "./contexts/LoadingProvider";
 import { SuccessPayment } from "./pages/SuccessPayment";
 import { CancelPayment } from "./pages/CancelPayment";
+import { GoogleCallback } from "./pages/Auth/GoogleCallback";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
    <Router>
           <ScrollToTop />
           <Routes>
+              <Route path="auth/google/redirect" element={<GoogleCallback />} />
+
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="product/:slug" element={<ProductDetail />} />
