@@ -8,12 +8,17 @@ import { IoFlashOutline } from "react-icons/io5";
 import { BannerSlider } from "../features/banner/components/BannerSlider";
 import axios from "axios";
 import { Loading } from "../components/Loading";
+import { useSelector } from "react-redux";
 
 export const Home = () => {
   const [filters, setFilters] = React.useState({
     sortBy: "no_of_sales",
     order: "desc",
   });
+   const categories = useSelector((state) => state.category.categories);
+
+
+   
   const [selectedFilters, setSelectedFilters] = React.useState("no_of_sales");
   const [lightingDeals, setLightingDeals] = useState([]);
 
@@ -36,7 +41,7 @@ export const Home = () => {
       <Slider />
 
       <div className="space-y-3 container mx-auto">
-        <CategorySlider />
+        <CategorySlider categories={categories} />
         <ProductSwiper
           title={"Lighting Deals"}
           icon={<IoFlashOutline className="text-yellow-400 text-3xl" />}

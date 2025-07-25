@@ -12,25 +12,11 @@ import { SearchModal } from "../features/search/components/SearchModal";
 
 export const NavBar = () => {
 
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Electronics" },
-    { id: 2, name: "Fashion" },
-    { id: 3, name: "Home & Kitchen" },
-    { id: 4, name: "Sports & Outdoors" },
-    { id: 5, name: "Health & Beauty" },
-    { id: 6, name: "Toys & Games" },
-    { id: 7, name: "Automotive" },
-    { id: 8, name: "Books & Stationery" },
-    { id: 9, name: "Grocery & Gourmet" },
-    { id: 10, name: "Pet Supplies" },
-    { id: 11, name: "Jewelry & Accessories" },
-    { id: 12, name: "Music & Movies" },
-    { id: 13, name: "Tools & Home Improvement" },
-    { id: 14, name: "Baby Products" },
-    { id: 15, name: "Office Supplies" },
-  ]);
+
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+    const categories = useSelector((state) => state.category.categories);
+  
 
   const cartCount = useSelector((state) => state.carts.cartCount);
   const isSearchModalOpen =useSelector((state)=>state.search.isOpenSearch);
@@ -156,7 +142,7 @@ export const NavBar = () => {
           {categories.map((category) => {
             return (
               <Link
-                to={`/category/${category.name}`}
+                to={`/category/${category.slug}`}
                 key={category.id}
                 className="text-sm font-medium text-black hover:text-black  text-nowrap"
               >

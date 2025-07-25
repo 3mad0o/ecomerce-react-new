@@ -259,7 +259,7 @@ export const ProductReviews = () => {
               {/* Add to cart button */}
               <Link
                 to={`/product/${slug}`}
-                className="w-full h-fit sm:w-auto mt-4 sm:mt-0 px-6 py-3 bg-black hover:bg-blue-700 text-white text-sm font-semibold rounded-md"
+                className="w-full text-center h-fit sm:w-auto mt-4 sm:mt-0 px-6 py-3 bg-black hover:bg-blue-700 text-white text-sm font-semibold rounded-md"
               >
                 Add to cart
               </Link>

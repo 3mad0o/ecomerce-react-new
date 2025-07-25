@@ -6,13 +6,44 @@ import { EditAddress } from "../features/address/components/EditAddress";
 import { CreateAddress } from "../features/address/components/CreateAddress";
 import MultiStepModal from "../components/MultiSTepModal";
 import { AnimatePresence, motion } from "framer-motion";
+import { useCart } from "../features/cart/hooks/useCart";
+import { formatCurrency } from "../utils/formatCurrency";
+import apiClient from "../lib/axios_client";
+import { useLoading } from "../contexts/LoadingProvider";
+import { set } from "zod/v4-mini";
+import { getOrCreateGuestId } from "../utils/guestCartService";
 
 
 export const Checkout = () => {
+    const { setLoading } = useLoading();
+  
   const [address, setAddress] = useState(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [addressStep, setAddressStep] = useState(0);
   const [isAddressModalLoading, setIsAddressModalLoading] = useState(false);
+    const { carts, setCarts,subtotal,grandTotal,tax } = useCart();
+  
+
+    const Checkout = () => {
+      setLoading(true);
+      apiClient.post('/checkout',{
+        guest_id:getOrCreateGuestId(),
+      } )
+      .then((res) => {
+
+        console.log("Checkout successful:", res.data);
+        location.href = res.data.data.url;
+      })
+      .catch((err) => {
+        console.error("Error during checkout:", err);
+        // Handle error, e.g., show an error message
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+
+    }
 
 
 
@@ -40,49 +71,24 @@ export const Checkout = () => {
             </div>
 
             <div className="space-y-4 mt-12">
-              {[
-                {
-                  id: 1,
-                  name: "Velvet Sneaker",
-                  size: "MD",
-                  price: "$20.00",
-                  quantity: 2,
-                  image: "https://readymadeui.com/images/product14.webp",
-                },
-                {
-                  id: 2,
-                  name: "Smart Watch Timex",
-                  size: "SM",
-                  price: "$60.00",
-                  quantity: 1,
-                  image: "https://readymadeui.com/images/watch5.webp",
-                },
-                {
-                  id: 3,
-                  name: "French Connection",
-                  size: "LG",
-                  price: "$40.00",
-                  quantity: 1,
-                  image: "https://readymadeui.com/images/watch4.webp",
-                },
-              ].map((item, index) => (
+              {carts.map((item, index) => (
                 <div key={item.id}>
                   <div className="grid grid-cols-3 items-start gap-4">
                     <div className="col-span-2 flex items-start gap-4">
                       <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0 bg-gray-100 p-2 rounded-md">
                         <img
-                          src={item.image}
-                          alt={item.name}
+                          src={item.product.main_image}
+                          alt={item.product.name}
                           className="w-full h-full object-contain"
                         />
                       </div>
 
                       <div className="flex flex-col">
                         <h3 className="text-base max-sm:text-sm font-bold text-gray-800">
-                          {item.name}
+                          {item.product.name}
                         </h3>
                         <p className="text-xs font-semibold text-gray-500 mt-0.5">
-                          Size: {item.size}
+                          {item.variants_string}
                         </p>
 
                         <button
@@ -104,7 +110,7 @@ export const Checkout = () => {
 
                     <div className="ml-auto">
                       <h4 className="text-lg max-sm:text-base font-bold text-gray-800">
-                        {item.price}
+                        {formatCurrency(item.subtotal, 'USD', 'en-US') }
                       </h4>
 
                       <div className="mt-6 flex items-center px-3 py-1.5 border border-gray-300 text-gray-800 text-xs bg-transparent rounded-md">
@@ -144,7 +150,7 @@ export const Checkout = () => {
             <ul class="text-slate-500 font-medium space-y-4">
               <li class="flex flex-wrap gap-4 text-sm">
                 Subtotal{" "}
-                <span class="ml-auto font-semibold text-slate-900">$72.00</span>
+                <span class="ml-auto font-semibold text-slate-900">{formatCurrency(subtotal)}</span>
               </li>
               <li class="flex flex-wrap gap-4 text-sm">
                 Discount{" "}
@@ -152,20 +158,21 @@ export const Checkout = () => {
               </li>
               <li class="flex flex-wrap gap-4 text-sm">
                 Shipping{" "}
-                <span class="ml-auto font-semibold text-slate-900">$6.00</span>
+                <span class="ml-auto font-semibold text-slate-900">$0.00</span>
               </li>
               <li class="flex flex-wrap gap-4 text-sm">
                 Tax{" "}
-                <span class="ml-auto font-semibold text-slate-900">$5.00</span>
+                <span class="ml-auto font-semibold text-slate-900">{formatCurrency(tax)}</span>
               </li>
               <hr class="border-slate-300" />
               <li class="flex flex-wrap gap-4 text-[15px] font-semibold text-slate-900">
-                Total <span class="ml-auto">$83.00</span>
+                Total <span class="ml-auto">{formatCurrency(grandTotal)}</span>
               </li>
             </ul>
             <div class="space-y-4 mt-8">
               <button
                 type="button"
+                onClick={()=>Checkout()}
                 class="rounded-md px-4 py-2.5 w-full text-sm font-medium tracking-wide bg-black hover:bg-blue-700 text-white cursor-pointer"
               >
                 Complete Purchase

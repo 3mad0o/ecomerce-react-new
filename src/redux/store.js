@@ -4,6 +4,7 @@ import { wishlistReducer } from "./Wishlist/WishlistSlice";
 import { addressModalReducer } from "./Address/AddressModalSlice";
 import { modalListReducer } from "./ModalList/ModalListSlice";
 import { searchReducer } from "./Search/searchSlice";
+import { categoryReducer } from "./Category/CategorySlice";
 
 const store = configureStore({
   reducer: { 
@@ -11,7 +12,8 @@ const store = configureStore({
     wishlist:wishlistReducer,
     address:addressModalReducer,
     modalList:modalListReducer ,
-    search:searchReducer
+    search:searchReducer,
+    category:categoryReducer
   },
 
 });

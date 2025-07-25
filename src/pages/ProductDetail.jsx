@@ -21,7 +21,7 @@ export const ProductDetail = () => {
   return (
     <>
       <div className="font-sans">
-        <div className="p-4 lg:max-w-5xl max-w-lg mx-auto">
+        <div className="p-4 lg:max-w-5xl max-w-lg mx-auto space-y-4">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-6 max-lg:gap-12">
             {/* Image Section */}
             <div className="w-full lg:sticky top-0 text-center">

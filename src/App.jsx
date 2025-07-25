@@ -12,6 +12,8 @@ import { Orders } from "./pages/Orders";
 import { OrderDetails } from "./pages/OrderDetails";
 import { WishList } from "./pages/WishList";
 import { LoadingProvider } from "./contexts/LoadingProvider";
+import { SuccessPayment } from "./pages/SuccessPayment";
+import { CancelPayment } from "./pages/CancelPayment";
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
               <Route path="/orders" element={<Orders />} />
               <Route path="/orders/:id" element={<OrderDetails />} />
               <Route path="/wishlist" element={<WishList />} />
+              <Route path="/payment/success/:track_id" element={<SuccessPayment />} />
+              <Route path="/payment/cancel/:track_id" element={<CancelPayment />} />
+
 
 
 
