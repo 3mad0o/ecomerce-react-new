@@ -7,6 +7,7 @@ const UserSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
+      state.loading = false; // done loading after setting user
     },
     getUser: (state) => {
       return state.user;
@@ -14,15 +15,17 @@ const UserSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
       state.isAuthenticated = false;
-    }
+    },
+    setUserLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
   initialState: {
     user: null,
     isAuthenticated: false,
-
+    loading: true,
   },
 });
 
-
-export const { setUser,getUser,clearUser } = UserSlice.actions;
+export const { setUser, getUser, clearUser, setUserLoading } = UserSlice.actions;
 export const userReducer = UserSlice.reducer;

@@ -30,11 +30,15 @@ export const CustomSelect = ({
         name={name}
         control={control}
         render={({ field }) => {
+          
           // react-select expects the entire option object as value, so find it from options
           const selectedOption = options.find((opt) =>
-            isMulti
+           {
+
+             return isMulti
               ? field.value?.includes(opt.value)
-              : opt.value === field.value
+              : opt.value == field.value
+           }
           );
 
           return (
@@ -48,7 +52,7 @@ export const CustomSelect = ({
                 if (isMulti) {
                   field.onChange(val ? val.map((v) => v.value) : []);
                 } else {
-                  field.onChange(val ? val.value : null);
+                  field.onChange(val ? val.value.toString() : null);
                 }
               }}
               className="react-select-container"

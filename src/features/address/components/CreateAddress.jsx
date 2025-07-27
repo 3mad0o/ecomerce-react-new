@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { xid } from "zod/v4-mini";
+import { set, xid } from "zod/v4-mini";
 import { CustomInput } from "../../../components/forms/CustomInput";
 import { CustomSelect } from "../../../components/forms/CustomSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { PhoneNumber } from "../../../components/forms/PhoneNumber";
+import { useLoading } from "../../../contexts/LoadingProvider";
+import apiClient from "../../../lib/axios_client";
 
 const options = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "orange", label: "Orange" },
+  { value: "1", label: "Apple" },
+  { value: "2", label: "Banana" },
+  { value: "3", label: "Orange" },
 ];
-export const CreateAddress = ({index,setIndex}) => {
+export const CreateAddress = ({setAddressStep}) => {
     
   const schema = z.object({
     first_name: z.string().nonempty("First Name is required"),
     last_name: z.string().nonempty("Last Name is required"),
-    phone: z.string().nonempty("Phone is required"),
-    city: z.string().nonempty("City is required"),
+    mobile: z.string().nonempty("Phone is required"),
+    country_code: z.string().nonempty("Country code is required"),
+    city_id: z.string().nonempty("City is required"),
     postal_code: z.string().optional(),
-    address: z.string().nonempty("Address is required"),
+    street: z.string().nonempty("Address is required"),
     apartment: z.string().optional(),
   });
   const methods = useForm({
@@ -29,18 +32,39 @@ export const CreateAddress = ({index,setIndex}) => {
       first_name: "",
       last_name: "",
 
-      phone: "",
-      city: "",
+      mobile: "",
+      country_code: "",
+      city_id: "",
       postal_code: "",
-      address: "",
+      street: "",
       apartment: "",
     },
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit,setValue } = methods;
+  const {setLoading} = useLoading();
   const onSubmit = (data) => {
-    console.log(data);
+
+    apiClient.post('/address', {
+      ...data,
+    })
+      .then((res) => {
+        setAddressStep(0); // Go back to the address list
+      })
+      .catch((err) => {
+        console.error("Error creating address:", err);
+        // Handle error, e.g., show an error message
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
+
+  const onChnageMobileNumber = (countryCode,mobileNumber) => {
+    console.log("Phone number changed:", countryCode, mobileNumber);
+    setValue("mobile", mobileNumber);
+    setValue("country_code", countryCode);
+  }
 
   useEffect(() => {
 
@@ -67,14 +91,15 @@ export const CreateAddress = ({index,setIndex}) => {
               type="text"
             />
             <PhoneNumber
-              name="phone"
+              name="mobile"
               label="Phone"
               placeholder="e.g. 0791234567"
               type="tel"
+              onChangeNumber={onChnageMobileNumber}
             />
 
             <CustomSelect
-              name="city"
+              name="city_id"
               label="City"
               placeholder="e.g. Amman"
               options={options}
@@ -89,7 +114,7 @@ export const CreateAddress = ({index,setIndex}) => {
             />
 
             <CustomInput
-              name="address"
+              name="street"
               label="Street Address"
               placeholder="e.g. 5th Circle, King Abdullah St."
               type="text"

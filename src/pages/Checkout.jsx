@@ -12,6 +12,7 @@ import apiClient from "../lib/axios_client";
 import { useLoading } from "../contexts/LoadingProvider";
 import { set } from "zod/v4-mini";
 import { getOrCreateGuestId } from "../utils/guestCartService";
+import { useAddress } from "../features/address/hooks/useAddress";
 
 
 export const Checkout = () => {
@@ -21,6 +22,7 @@ export const Checkout = () => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [addressStep, setAddressStep] = useState(0);
   const [isAddressModalLoading, setIsAddressModalLoading] = useState(false);
+
     const { carts, setCarts,subtotal,grandTotal,tax } = useCart();
   
 
@@ -212,10 +214,10 @@ export const Checkout = () => {
             exit={{ x: -300, opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            {addressStep === 0 && <ChangeAddressList setAddressStep={setAddressStep}/>}
+            {addressStep === 0 && <ChangeAddressList setAddressStep={setAddressStep} setAddress={setAddress} />}
 
-            {addressStep === 1 && <EditAddress />}
-            {addressStep === 2 && <CreateAddress />}
+            {addressStep === 1 && <EditAddress  address={address} setAddressStep={setAddressStep}/> }
+            {addressStep === 2 && <CreateAddress setAddressStep={setAddressStep} />}
           </motion.div>
         </AnimatePresence>
       </MultiStepModal>

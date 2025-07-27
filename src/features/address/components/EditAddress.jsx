@@ -7,48 +7,72 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { PhoneNumber } from "../../../components/forms/PhoneNumber";
 import Modal from "../../../components/Modal";
+import { useLoading } from "../../../contexts/LoadingProvider";
+import apiClient from "../../../lib/axios_client";
 
 const options = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "orange", label: "Orange" },
+  { value: "1", label: "Apple" },
+  { value: "2", label: "Banana" },
+  { value: "3", label: "Orange" },
 ];
-export const EditAddress = ({index,setIndex}) => {
+export const EditAddress = ({address,setAddressStep}) => {
     
-  const schema = z.object({
-    first_name: z.string().nonempty("First Name is required"),
-    last_name: z.string().nonempty("Last Name is required"),
-    phone: z.string().nonempty("Phone is required"),
-    city: z.string().nonempty("City is required"),
-    postal_code: z.string().optional(),
-    address: z.string().nonempty("Address is required"),
-    apartment: z.string().optional(),
-  });
-  const methods = useForm({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      first_name: "tes",
-      last_name: "test",
-
-      phone: "966788833421",
-      city: "apple",
-      postal_code: "1111",
-      address: "tftyf",
-      apartment: "njun",
-    },
-  });
-  const { handleSubmit } = methods;
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
-
-  useEffect(() => {
-
-    console.log("CheckoutInfo component mounted");
-
-  },[]);
-
+ const schema = z.object({
+     first_name: z.string().nonempty("First Name is required"),
+     last_name: z.string().nonempty("Last Name is required"),
+     mobile: z.string().nonempty("Phone is required"),
+     country_code: z.string().nonempty("Country code is required"),
+     city_id: z.string().nonempty("City is required"),
+     postal_code: z.string().optional(),
+     street: z.string().nonempty("Address is required"),
+     apartment: z.string().optional(),
+   });
+   const methods = useForm({
+     resolver: zodResolver(schema),
+     defaultValues: {
+       first_name: address.first_name || "",
+       last_name: address.last_name || "",
+ 
+       mobile:address.country_code + address.mobile,
+       country_code: address.country_code || "",
+       city_id:  address.city_id || "",
+       postal_code: address.postal_code || "",
+       street:  address.street || "",
+       apartment: address.apartment || "",
+     },
+   });
+   const { handleSubmit,setValue } = methods;
+   const {setLoading} = useLoading();
+   const onSubmit = (data) => {
+ 
+     apiClient.put(`/address/${address.id}`, {
+       ...data,
+     })
+       .then((res) => {
+         setAddressStep(0); // Go back to the address list
+       })
+       .catch((err) => {
+         console.error("Error creating address:", err);
+         // Handle error, e.g., show an error message
+       })
+       .finally(() => {
+         setLoading(false);
+       });
+   };
+ 
+ 
+   const onChnageMobileNumber = (countryCode,mobileNumber) => {
+     console.log("Phone number changed:", countryCode, mobileNumber);
+     setValue("mobile", mobileNumber);
+     setValue("country_code", countryCode);
+   }
+ 
+   useEffect(() => {
+ 
+     console.log("CheckoutInfo component mounted");
+ 
+   },[]);
+ 
   return (
     <>
 
@@ -71,14 +95,14 @@ export const EditAddress = ({index,setIndex}) => {
               type="text"
             />
             <PhoneNumber
-              name="phone"
+              name="mobile"
               label="Phone"
               placeholder="e.g. 0791234567"
               type="tel"
             />
 
             <CustomSelect
-              name="city"
+              name="city_id"
               label="City"
               placeholder="e.g. Amman"
               options={options}
@@ -93,7 +117,7 @@ export const EditAddress = ({index,setIndex}) => {
             />
 
             <CustomInput
-              name="address"
+              name="street"
               label="Street Address"
               placeholder="e.g. 5th Circle, King Abdullah St."
               type="text"
