@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductList } from "../features/Products/Components/ProductList";
 import { CheckoutAddressesCard } from "../features/address/components/CheckoutAddressesCard";
 import { ChangeAddressList } from "../features/address/components/ChangeAddressList";
@@ -14,25 +14,32 @@ import { set } from "zod/v4-mini";
 import { getOrCreateGuestId } from "../utils/guestCartService";
 import { useAddress } from "../features/address/hooks/useAddress";
 
-
 export const Checkout = () => {
-    const { setLoading } = useLoading();
-  
+  const { setLoading } = useLoading();
+
   const [address, setAddress] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [addressStep, setAddressStep] = useState(0);
   const [isAddressModalLoading, setIsAddressModalLoading] = useState(false);
 
-    const { carts, setCarts,subtotal,grandTotal,tax } = useCart();
-  
+  const {
+    carts,
+    setCarts,
+    subtotal,
+    grandTotal,
+    tax,
+    address: addressApi,
+  } = useCart();
 
-    const Checkout = () => {
-      setLoading(true);
-      apiClient.post('/checkout',{
-        guest_id:getOrCreateGuestId(),
-      } )
+  const Checkout = () => {
+    setLoading(true);
+    apiClient
+      .post("/checkout", {
+        guest_id: getOrCreateGuestId(),
+      })
       .then((res) => {
-
         console.log("Checkout successful:", res.data);
         location.href = res.data.data.url;
       })
@@ -43,11 +50,31 @@ export const Checkout = () => {
       .finally(() => {
         setLoading(false);
       });
+  };
 
+  useEffect(() => {
+    setIsAddressModalOpen(false);
+    if (!selectedAddress) return;
+    setLoading(false);
 
-    }
+    apiClient
+      .post("carts/change-address", {
+        address_id: selectedAddress?.id,
+      })
+      .then((res) => {
 
+        setAddress(selectedAddress)
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
 
+      });
+  }, [selectedAddress]);
+
+  useEffect(() => {
+    setAddress(addressApi);
+  }, [addressApi]);
 
   return (
     <>
@@ -64,7 +91,7 @@ export const Checkout = () => {
                 Change Address
               </button>
             </div>
-            <CheckoutAddressesCard />
+            {address && <CheckoutAddressesCard address={address} />}
           </div>
 
           <div>
@@ -112,7 +139,7 @@ export const Checkout = () => {
 
                     <div className="ml-auto">
                       <h4 className="text-lg max-sm:text-base font-bold text-gray-800">
-                        {formatCurrency(item.subtotal, 'USD', 'en-US') }
+                        {formatCurrency(item.subtotal, "USD", "en-US")}
                       </h4>
 
                       <div className="mt-6 flex items-center px-3 py-1.5 border border-gray-300 text-gray-800 text-xs bg-transparent rounded-md">
@@ -152,7 +179,9 @@ export const Checkout = () => {
             <ul class="text-slate-500 font-medium space-y-4">
               <li class="flex flex-wrap gap-4 text-sm">
                 Subtotal{" "}
-                <span class="ml-auto font-semibold text-slate-900">{formatCurrency(subtotal)}</span>
+                <span class="ml-auto font-semibold text-slate-900">
+                  {formatCurrency(subtotal)}
+                </span>
               </li>
               <li class="flex flex-wrap gap-4 text-sm">
                 Discount{" "}
@@ -164,7 +193,9 @@ export const Checkout = () => {
               </li>
               <li class="flex flex-wrap gap-4 text-sm">
                 Tax{" "}
-                <span class="ml-auto font-semibold text-slate-900">{formatCurrency(tax)}</span>
+                <span class="ml-auto font-semibold text-slate-900">
+                  {formatCurrency(tax)}
+                </span>
               </li>
               <hr class="border-slate-300" />
               <li class="flex flex-wrap gap-4 text-[15px] font-semibold text-slate-900">
@@ -174,7 +205,7 @@ export const Checkout = () => {
             <div class="space-y-4 mt-8">
               <button
                 type="button"
-                onClick={()=>Checkout()}
+                onClick={() => Checkout()}
                 class="rounded-md px-4 py-2.5 w-full text-sm font-medium tracking-wide bg-black hover:bg-blue-700 text-white cursor-pointer"
               >
                 Complete Purchase
@@ -214,10 +245,19 @@ export const Checkout = () => {
             exit={{ x: -300, opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            {addressStep === 0 && <ChangeAddressList setAddressStep={setAddressStep} setAddress={setAddress} />}
+            {addressStep === 0 && (
+              <ChangeAddressList
+                setAddressStep={setAddressStep}
+                setAddress={setSelectedAddress}
+              />
+            )}
 
-            {addressStep === 1 && <EditAddress  address={address} setAddressStep={setAddressStep}/> }
-            {addressStep === 2 && <CreateAddress setAddressStep={setAddressStep} />}
+            {addressStep === 1 && (
+              <EditAddress address={address} setAddressStep={setAddressStep} />
+            )}
+            {addressStep === 2 && (
+              <CreateAddress setAddressStep={setAddressStep} />
+            )}
           </motion.div>
         </AnimatePresence>
       </MultiStepModal>

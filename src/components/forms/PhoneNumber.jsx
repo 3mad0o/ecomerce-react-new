@@ -4,11 +4,18 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
-export const PhoneNumber = ({ name, placeholder, label, onChangeNumber }) => {
+export const PhoneNumber = ({
+  name = "phone",
+  placeholder,
+  label,
+  onChangeNumber, // optional callback for parent
+  countryCodeName = "country_code",
+  mobileName = "mobile",
+}) => {
   const {
     control,
+    setValue,
     formState: { errors },
-    setValue, // useful for setting other fields like countryCode
   } = useFormContext();
 
   return (
@@ -25,29 +32,36 @@ export const PhoneNumber = ({ name, placeholder, label, onChangeNumber }) => {
       <Controller
         control={control}
         name={name}
-        render={({ field: { onChange, value, ref } }) => (
+        render={({ field: { onChange, value } }) => (
           <PhoneInput
             className="custom-phone-input flex-1"
-            value={typeof value === "string" ? value : ""}
+            value={
+              typeof value === "string" && value.startsWith("+") ? value : ""
+            }
             onChange={(phone) => {
-              if (typeof phone === "string") {
-                const parsed = parsePhoneNumberFromString(phone);
-                if (parsed) {
-                  const countryCode = "+" + parsed.countryCallingCode;
-                  const nationalNumber = parsed.nationalNumber;
+              onChange(phone);
 
-                  // ✅ Optional: store them in separate hidden fields or handle in submit
-                  onChangeNumber(countryCode, nationalNumber); // store full phone number
+              const parsed = parsePhoneNumberFromString(phone || "");
+
+              if (parsed) {
+                const countryCode = "+" + parsed.countryCallingCode;
+                const nationalNumber = parsed.nationalNumber;
+
+                setValue(countryCodeName, countryCode);
+                setValue(mobileName, nationalNumber);
+
+                if (onChangeNumber) {
+                  onChangeNumber(countryCode, nationalNumber);
                 }
-
               } else {
-                onChange(""); // reset
+                setValue(countryCodeName, "");
+                setValue(mobileName, "");
+                if (onChangeNumber) onChangeNumber("", "");
               }
             }}
             defaultCountry="JO"
             placeholder={placeholder || "Enter phone number"}
             international
-            defaultValue={value || ""}
           />
         )}
       />

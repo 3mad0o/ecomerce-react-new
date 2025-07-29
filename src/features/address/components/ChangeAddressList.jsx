@@ -14,6 +14,7 @@ export const ChangeAddressList = ({ setAddressStep,setAddress }) => {
 
     if (selected) {
       console.log("Selected address:", selected);
+      setAddress(addresses.find(addr => addr.id === selected));
       // You can dispatch it to Redux or move to next step with selected address
       // dispatch(setSelectedAddress(selected))
     } else {
@@ -46,8 +47,10 @@ export const ChangeAddressList = ({ setAddressStep,setAddress }) => {
                     type="radio"
                     name="address"
                     className="absolute top-0 left-0 bottom-0 right-0 opacity-0 peer z-10"
-                    checked={selected?.id === address.id}
-                    onChange={() => setSelected(address.id)}
+                    checked= {selected === address.id}
+                    onChange={() => {
+                      setSelected(address.id);
+                    }}
                   />
 
                   {/* Check icon */}

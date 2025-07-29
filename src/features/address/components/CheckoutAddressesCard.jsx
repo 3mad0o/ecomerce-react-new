@@ -1,15 +1,23 @@
 import React from "react";
 import { FaRegEdit } from "react-icons/fa";
 
-export const CheckoutAddressesCard = () => {
+export const CheckoutAddressesCard = ({ address }) => {
   return (
     <div className="border border-gray-200 w-full relative flex flex-col">
       <div className="p-4 space-y-4">
         <div className="flex flex-col">
-          <span className="font-medium">John Doe</span>
-          <span>123 Main St, Apt 4B</span>
-          <span>New York, NY 10001</span>
-          <span>(123) 456-7890</span>
+          <span className="font-medium">
+            {address.first_name} {address.last_name}
+          </span>
+          <span>{address.street || "No Street"}</span>
+          <span>
+            {" "}
+            {address.city || "No City"}, {address.postal_code || ""}
+          </span>
+          <span>
+            {" "}
+            {address.country_code + " " + address.mobile || "No Phone"}
+          </span>
         </div>
       </div>
 

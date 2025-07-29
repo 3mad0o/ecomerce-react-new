@@ -9,6 +9,7 @@ export const useCart = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const [tax,setTax]= useState(0);
+  const [address, setAddress] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -24,6 +25,7 @@ export const useCart = () => {
         setSubtotal(data.subtotal);
         setGrandTotal(data.grand_total);
         setTax(data.tax);
+        setAddress(data.address);
       })
       .catch((err) => console.error("Error fetching product:", err))
       .finally(() => {
@@ -31,5 +33,5 @@ export const useCart = () => {
       });
   }, []);
 
-  return { carts, setCarts, subtotal, grandTotal, tax};
+  return { carts, setCarts, subtotal, grandTotal, tax, address};
 };

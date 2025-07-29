@@ -8,14 +8,16 @@ import { z } from "zod";
 import { PhoneNumber } from "../../../components/forms/PhoneNumber";
 import { useLoading } from "../../../contexts/LoadingProvider";
 import apiClient from "../../../lib/axios_client";
+import { useCities } from "../../../hooks/useCities";
 
 const options = [
   { value: "1", label: "Apple" },
   { value: "2", label: "Banana" },
   { value: "3", label: "Orange" },
 ];
-export const CreateAddress = ({setAddressStep}) => {
-    
+export const CreateAddress = ({ setAddressStep }) => {
+
+  const {cities} =useCities()
   const schema = z.object({
     first_name: z.string().nonempty("First Name is required"),
     last_name: z.string().nonempty("Last Name is required"),
@@ -40,13 +42,14 @@ export const CreateAddress = ({setAddressStep}) => {
       apartment: "",
     },
   });
-  const { handleSubmit,setValue } = methods;
-  const {setLoading} = useLoading();
+  const { handleSubmit, setValue } = methods;
+  const { setLoading } = useLoading();
   const onSubmit = (data) => {
-
-    apiClient.post('/address', {
-      ...data,
-    })
+    setLoading(true);
+    apiClient
+      .post("/address", {
+        ...data,
+      })
       .then((res) => {
         setAddressStep(0); // Go back to the address list
       })
@@ -59,18 +62,15 @@ export const CreateAddress = ({setAddressStep}) => {
       });
   };
 
-
-  const onChnageMobileNumber = (countryCode,mobileNumber) => {
+  const onChnageMobileNumber = (countryCode, mobileNumber) => {
     console.log("Phone number changed:", countryCode, mobileNumber);
     setValue("mobile", mobileNumber);
     setValue("country_code", countryCode);
-  }
+  };
 
   useEffect(() => {
-
     console.log("CheckoutInfo component mounted");
-
-  },[]);
+  }, []);
 
   return (
     <>
@@ -95,14 +95,15 @@ export const CreateAddress = ({setAddressStep}) => {
               label="Phone"
               placeholder="e.g. 0791234567"
               type="tel"
-              onChangeNumber={onChnageMobileNumber}
+              countryCodeName="country_code"
+              mobileName="mobile"
             />
 
             <CustomSelect
               name="city_id"
               label="City"
               placeholder="e.g. Amman"
-              options={options}
+              options={cities}
               type="text"
             />
 
