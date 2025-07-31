@@ -11,6 +11,7 @@ export const CategorySlider = ({ categories }) => {
             {categories.slice(0, 15).map((category, index) => {
               return (
                 <Link
+                key={category.id+'-'+index}
                   to={"/category/" + category.slug}
                   className="flex flex-col items-center p-4 "
                   title="Category Name"

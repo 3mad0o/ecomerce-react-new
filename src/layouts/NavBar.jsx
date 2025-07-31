@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import { toggleCartSide } from "../redux/Cart/CartSlice";
@@ -9,21 +9,28 @@ import omdalogo from "../assets/omdalogo.png";
 import { Dropdown } from "../components/ui/Dropdown";
 import { closeModal, openSearchModal } from "../redux/Search/searchSlice";
 import { SearchModal } from "../features/search/components/SearchModal";
+import apiClient from "../lib/axios_client";
+import { setUser } from "../redux/User/UserSlice";
 
 export const NavBar = () => {
-
-
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-    const categories = useSelector((state) => state.category.categories);
-  
+  const categories = useSelector((state) => state.category.categories);
+  const user = useSelector((state) => state.user.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
+  const fastLogin = () => {
+    apiClient.post("/auth/fast-login").then((response) => {
+      localStorage.setItem("token", response.data.data.access_token);
+      dispatch(setUser(response.data.data.user));
+    });
+  };
   const cartCount = useSelector((state) => state.carts.cartCount);
-  const isSearchModalOpen =useSelector((state)=>state.search.isOpenSearch);
+  const isSearchModalOpen = useSelector((state) => state.search.isOpenSearch);
 
   useEffect(() => {
-  console.log("Modal open?", isSearchModalOpen);
-});
+    console.log("Modal open?", isSearchModalOpen);
+  });
   const wishlistCount = useSelector(
     (state) => state.wishlist.wishlistItems.length
   );
@@ -43,6 +50,20 @@ export const NavBar = () => {
     setOpenLoginModal(false);
     setIsLogin(false);
   };
+
+const profileItems = useMemo(() => {
+  return isAuthenticated
+    ? [
+        { label: "Profile", link: "/profile" },
+        { label: "Orders", link: "/orders" },
+        { label: "Settings", link: "/settings" },
+        { label: "Logout", link: "/logout" },
+      ]
+    : [
+        { label: "fast Login", event: fastLogin },
+        { label: "Login", event: openLoaginModal },
+      ];
+}, [isAuthenticated]);
 
   return (
     <>
@@ -82,22 +103,16 @@ export const NavBar = () => {
                 </button>
               </div>
 
-     
-
               <div className="flex items-center gap-x-6 gap-y-4 ">
-
-
                 <div className="flex items-center sm:space-x-8 space-x-6">
-
-                     <button type="button"
-                    onClick={()=>dispatch(openSearchModal())}
-                  
+                  <button
+                    type="button"
+                    onClick={() => dispatch(openSearchModal())}
                   >
                     <CiSearch className="text-3xl" />
-
                   </button>
                   <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
-                    <Link className="relative" to={'/wishlist'}>
+                    <Link className="relative" to={"/wishlist"}>
                       <CiHeart className="text-3xl" />
 
                       <span className="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
@@ -115,21 +130,11 @@ export const NavBar = () => {
                     </div>
                   </div>
 
-            
                   <div className="flex flex-col items-center justify-center gap-0.5 cursor-pointer">
-                      <Dropdown 
-                        items={[
-                          { label: "Profile", link: "/profile" },
-                          { label: "Orders", link: "/orders" },
-                          { label: "Settings", link: "/settings" },
-                          { label: "Logout", link: "/logout" },
-                          { label: "Login", event: openLoaginModal },
-                          {label:"Orders", link:"/orders"}
-                        ]}
-                        title={<CiUser className="text-3xl" />}
-                      
-                      />
-
+                    <Dropdown
+                      items={profileItems}
+                      title={<CiUser className="text-3xl" />}
+                    />
                   </div>
                 </div>
               </div>
@@ -165,14 +170,14 @@ export const NavBar = () => {
         </Modal>
       )}
 
-
       {isSearchModalOpen && (
-          <Modal isOpen={isSearchModalOpen} onClose={()=>dispatch(closeModal())} title={'Search Product'}>
-                <SearchModal />
-
-
-          </Modal>
-
+        <Modal
+          isOpen={isSearchModalOpen}
+          onClose={() => dispatch(closeModal())}
+          title={"Search Product"}
+        >
+          <SearchModal />
+        </Modal>
       )}
     </>
   );
