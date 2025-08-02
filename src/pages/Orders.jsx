@@ -5,7 +5,12 @@ import {
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import { HiChevronDoubleLeft, HiChevronLeft, HiChevronRight, HiChevronDoubleRight } from "react-icons/hi";
+import {
+  HiChevronDoubleLeft,
+  HiChevronLeft,
+  HiChevronRight,
+  HiChevronDoubleRight,
+} from "react-icons/hi";
 
 import {
   keepPreviousData,
@@ -15,11 +20,11 @@ import {
 } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { fetchData } from "../services/fetchOrdersData";
 import { Dropdown } from "../components/ui/Dropdown";
 import { CiMenuBurger } from "react-icons/ci";
 import { StatusesBox } from "../features/orders/StatusesBox";
 import { useSearchParams } from "react-router";
+import apiClient from "../lib/axios_client";
 
 export const Orders = () => {
   const rerender = useReducer(() => ({}), {})[1];
@@ -41,7 +46,7 @@ export const Orders = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "orderId",
+        accessorKey: "id",
         header: "Oreder ID",
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
@@ -49,7 +54,10 @@ export const Orders = () => {
       {
         accessorKey: "productsCount",
         header: "Products Count",
-        cell: (info) => info.getValue(),
+        cell: ({ cell, row }) => {
+          
+          return row.original.order_products.length || 0;
+        },
         footer: (props) => props.column.id,
       },
       {
@@ -61,7 +69,7 @@ export const Orders = () => {
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "subTotal",
+        accessorKey: "subtotal",
         header: "subTotal",
         footer: (props) => props.column.id,
       },
@@ -71,12 +79,12 @@ export const Orders = () => {
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "grandTotal",
+        accessorKey: "grand_total",
         header: "Grand Total",
         footer: (props) => props.column.id,
       },
       {
-        accessorKey: "createdAt",
+        accessorKey: "created_at",
         header: "Created At",
         footer: (props) => props.column.id,
       },
@@ -98,6 +106,26 @@ export const Orders = () => {
     pageSize: 10,
   });
 
+  const fetchData = (options, status) => {
+    let rows = [];
+    let pageCount = 0;
+    let rowCount = 0;
+    return apiClient
+      .get(`order/${status}`)
+      .then((response) => {
+        console.log("response.data.data", response.data.data);
+        rows = response.data.data;
+        pageCount = response.data.links.total;
+        rowCount = response.data.links.per_page;
+
+        return {
+          rows: rows,
+          pageCount: pageCount,
+          rowCount: rowCount,
+        };
+      })
+      .catch((error) => {});
+  };
   const dataQuery = useQuery({
     queryKey: ["data", pagination, status],
     queryFn: () => fetchData(pagination, status),
@@ -216,7 +244,6 @@ export const Orders = () => {
                 {table.getPageCount().toLocaleString()}
               </strong>
             </span>
-
           </div>
         </div>
       </div>
@@ -242,7 +269,7 @@ export const Actions = ({ row }) => {
   return (
     <Dropdown
       items={[
-        { label: "View Details", link: `/orders/${row.original.orderId}` },
+        { label: "View Details", link: `/orders/${row.original.id}` },
       ]}
       title={<CiMenuBurger className="text-2xl" />}
     />

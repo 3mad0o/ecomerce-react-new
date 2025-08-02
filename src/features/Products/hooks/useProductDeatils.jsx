@@ -15,6 +15,7 @@ export const useProductDeatils = ({ slug }) => {
   const [selectedVariants, setSelectedVariants] = useState({});
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [quantity,setQuantity] =useState(1);
 
   useEffect(() => {
     setLoading(true);
@@ -49,7 +50,7 @@ export const useProductDeatils = ({ slug }) => {
       apiClient
         .post(`/carts/product/${product.id}/add-to-cart`, {
           product_id: product.id,
-          quantity: 1,
+          quantity: quantity,
           selected_variants: selectedVariants,
           guest_id: getOrCreateGuestId(),
         })
@@ -99,5 +100,7 @@ export const useProductDeatils = ({ slug }) => {
     handleVariantChange,
     handleAddToCart,
     calculateDiscountedPrice,
+    quantity,
+    setQuantity
   };
 };

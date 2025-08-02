@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { addToCart, toggleCartSide } from "../redux/Cart/CartSlice";
 import { ProductList } from "../features/Products/Components/ProductList";
 import { useProductDeatils } from "../features/Products/hooks/useProductDeatils";
+import { Quantity } from "../features/Products/Components/Quantity";
 
 export const ProductDetail = () => {
   const { slug } = useParams();
@@ -17,7 +18,11 @@ export const ProductDetail = () => {
     selectedVariants,
     handleVariantChange,
     handleAddToCart,
-    calculateDiscountedPrice} =useProductDeatils({slug});
+    calculateDiscountedPrice,
+    quantity,
+    setQuantity
+  
+  } =useProductDeatils({slug});
   return (
     <>
       <div className="font-sans">
@@ -112,6 +117,11 @@ export const ProductDetail = () => {
                   </div>
                 </div>
               ))}
+
+              <div className="mt-8">
+              <Quantity quantity={quantity} setQuantity={setQuantity}/>
+
+              </div>
 
               {/* Add to Cart Button */}
               <button

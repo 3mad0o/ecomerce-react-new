@@ -4,21 +4,24 @@ import { useDispatch } from "react-redux";
 import { addToCart, toggleCartSide } from "../../../redux/Cart/CartSlice";
 import { Link } from "react-router";
 import { useProductDeatils } from "../hooks/useProductDeatils";
+import { Quantity } from "./Quantity";
 
-export const AddProductToCartModal = ({ closeModal,slug }) => {
-  const { 
+export const AddProductToCartModal = ({ closeModal, slug }) => {
+  const {
     isLoading,
-     product,
+    product,
     selectedImage,
     setSelectedImage,
     selectedVariants,
     handleVariantChange,
     handleAddToCart,
-    calculateDiscountedPrice} =useProductDeatils({slug});
-
+    calculateDiscountedPrice,
+    quantity,
+    setQuantity,
+  } = useProductDeatils({ slug });
 
   return (
-  <>
+    <>
       <div className="font-sans">
         <div className="p-4 lg:max-w-5xl max-w-lg mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-6 max-lg:gap-12">
@@ -112,6 +115,10 @@ export const AddProductToCartModal = ({ closeModal,slug }) => {
                 </div>
               ))}
 
+              <div className="mt-8">
+                <Quantity quantity={quantity} setQuantity={setQuantity} />
+              </div>
+
               {/* Add to Cart Button */}
               <button
                 type="button"
@@ -131,9 +138,7 @@ export const AddProductToCartModal = ({ closeModal,slug }) => {
                     {product.description}
                   </p>
                 ) : (
-                  <p className="text-md text-gray-800 mt-2 ">
-                    no description
-                  </p>
+                  <p className="text-md text-gray-800 mt-2 ">no description</p>
                 )}
               </div>
 
@@ -152,7 +157,6 @@ export const AddProductToCartModal = ({ closeModal,slug }) => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
